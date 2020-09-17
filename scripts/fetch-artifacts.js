@@ -4,6 +4,7 @@ const path = require('path');
 const { promisify } = require('util');
 const JSZip = require('jszip');
 
+const artifactsDir = path.join(__dirname, '../.gh-artifacts');
 const asyncWriteFile = promisify(fs.writeFile);
 
 const params = {
@@ -24,13 +25,12 @@ const downloadArtifactAsJSON = async artifact => {
   const zip = new JSZip();
   await zip.loadAsync(data);
   const json = await zip.file(artifact.name).async('string');
-  await asyncWriteFile(
-    path.join(__dirname, '../.gh-artifacts', artifact.name),
-    json
-  );
+  await asyncWriteFile(path.join(artifactsDir, artifact.name), json);
 };
 
 (async () => {
+  fs.rmdirSync(artifactsDir, { recursive: true });
+  fs.mkdirSync(artifactsDir, { recursive: true });
   const {
     data: { artifacts },
   } = await octokit.actions.listArtifactsForRepo(params);

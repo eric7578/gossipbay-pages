@@ -1,0 +1,18 @@
+{
+  "name": "gossipbay-pages",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:eric7578/gossipbay-pages.git",
+  "author": "ericyan <eric7578@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "babel-plugin-styled-components": "^1.11.1",
+    "next": "^9.5.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.2.0"
+  },
+  "scripts": {
+    "dev": "next dev"
+  }
+}

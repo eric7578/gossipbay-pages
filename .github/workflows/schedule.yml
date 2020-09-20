@@ -6,19 +6,34 @@ on:
 jobs:
   compile:
     name: Compile and run schedule jobs
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GBA_REPO: gossipbay
+      GIT_USER: ericyan
+      GIT_EMAIL: eric7578@gmail.com
+      OUT_DIR: ./out
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [12.x]
     steps:
+      - name: Set env
+        run: echo ::set-env name=PUBLISH_ID::$(date +%s)
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-      - name: Fetch artifacts
-        env:
-          GBA_REPO: gossipbay
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npm run fetch-artifacts
-      - run: npm run deploy
+      - run: npm run fetch-artifacts
+      - run: npm run predeploy
+      - name: Deploy
+        run: |
+          cd ${{ env.OUT_DIR }}
+          git init
+          git config --local user.name ${{ env.GIT_USER }}
+          git config --local user.email ${{ env.GIT_EMAIL }}
+          git remote add origin https://${{ secrets.GH_TOKEN }}@github.com/eric7578/gossipbay-pages.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "Deploy by github action ${{ env.PUBLISH_ID }}"
+          git push origin gh-pages -f

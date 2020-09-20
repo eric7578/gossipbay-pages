@@ -7,16 +7,22 @@ export default function useNormalizeBoardName(boardName) {
       return byUnderline.map(seg => seg.toUpperCase()).join(' ');
     }
 
-    boardName = [...boardName].reduce((chars, c, index) => {
-      if (index > 0 && /[A-Z]/.test(c)) {
-        chars.push(` ${c}`);
-      } else {
-        chars.push(c);
+    const chars = [];
+    const regUpperCase = /[A-Z]/;
+    for (let x = 0, len = boardName.length; x < len; x++) {
+      const c = boardName.charAt(x);
+      if (c === '_') {
+        c = ' ';
+      } else if (x > 0) {
+        const prevc = boardName.charAt(x - 1);
+        if (!regUpperCase.test(prevc) && regUpperCase.test(c)) {
+          chars.push(' ');
+        }
       }
-      return chars;
-    }, []);
+      chars.push(c);
+    }
 
-    return boardName.join('').toUpperCase();
+    return chars.join('').toUpperCase();
   }, [boardName]);
 
   return normalized;

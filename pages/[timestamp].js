@@ -1,14 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
 import fs from 'fs';
 import { promisify } from 'util';
 import path from 'path';
+import Board from '../components/Board';
 
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
 
-const Trendings = props => {
-  return null;
+const DailyTrendings = ({ boards }) => {
+  return boards.map(boardData => (
+    <Board key={boardData.board} {...boardData} />
+  ));
 };
 
 export async function getStaticProps({ params: { timestamp } }) {
@@ -18,7 +20,9 @@ export async function getStaticProps({ params: { timestamp } }) {
   );
 
   return {
-    props: JSON.parse(json),
+    props: {
+      boards: JSON.parse(json),
+    },
   };
 }
 
@@ -36,4 +40,4 @@ export async function getStaticPaths() {
   };
 }
 
-export default Trendings;
+export default DailyTrendings;

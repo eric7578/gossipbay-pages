@@ -8,8 +8,8 @@ const artifactsDir = path.join(__dirname, '../.gh-artifacts');
 const asyncWriteFile = promisify(fs.writeFile);
 
 const params = {
-  owner: process.env.GH_OWNER,
-  repo: process.env.GH_REPO,
+  owner: process.env.GITHUB_ACTOR,
+  repo: process.env.GBA_REPO,
 };
 
 const octokit = new Octokit({

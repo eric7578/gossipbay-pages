@@ -1,0 +1,24 @@
+name: Schedule
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 0 * * *'
+jobs:
+  compile:
+    name: Compile and run schedule jobs
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - name: Fetch artifacts
+        env:
+          GBA_REPO: gossipbay
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npm run fetch-artifacts
+      - run: npm run deploy

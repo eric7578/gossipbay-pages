@@ -3,12 +3,14 @@ import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
 import Board from '../components/Board';
+import useSortedBoards from '../components/useSortedBoards';
 
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
 
 const Index = ({ boards }) => {
-  return boards.map(boardData => (
+  const sorted = useSortedBoards(boards);
+  return sorted.map(boardData => (
     <Board key={boardData.board} {...boardData} />
   ));
 };

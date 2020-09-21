@@ -12,6 +12,7 @@ jobs:
       GIT_USER: ericyan
       GIT_EMAIL: eric7578@gmail.com
       OUT_DIR: ./out
+      DEPLOY_HOST: gh-pages
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -29,6 +30,7 @@ jobs:
       - name: Deploy
         run: |
           cd ${{ env.OUT_DIR }}
+          touch .nojekyll
           git init
           git config --local user.name ${{ env.GIT_USER }}
           git config --local user.email ${{ env.GIT_EMAIL }}

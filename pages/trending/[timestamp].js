@@ -2,7 +2,7 @@ import React from 'react';
 import fs from 'fs';
 import { promisify } from 'util';
 import path from 'path';
-import Board from '../components/Board';
+import Board from '../../components/Board';
 
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
